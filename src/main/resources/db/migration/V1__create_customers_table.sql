@@ -12,5 +12,6 @@ CREATE TABLE customers (
     CONSTRAINT uk_customer_nik UNIQUE (nik),
     CONSTRAINT uk_customer_email UNIQUE (email),
     CONSTRAINT chk_customer_nik_length CHECK (char_length(nik) = 16),
-    CONSTRAINT chk_customer_phone_length CHECK (char_length(phone_number) BETWEEN 10 AND 15)
+    CONSTRAINT chk_customer_phone_length CHECK (char_length(phone_number) BETWEEN 10 AND 15),
+    CONSTRAINT uk_customer_phone_number UNIQUE (phone_number)
 );
