@@ -14,9 +14,12 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -26,7 +29,9 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@SuperBuilder
 @Table(name = "repayment_schedules")
 public class RepaymentScheduleEntity extends BaseEntity {
 
@@ -59,8 +64,10 @@ public class RepaymentScheduleEntity extends BaseEntity {
     @NotNull(message = "Status wajib diisi")
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 30)
+    @Builder.Default
     private RepaymentStatus status = RepaymentStatus.UNPAID;
 
     @OneToMany(mappedBy = "repaymentSchedule")
+    @Builder.Default
     private List<PaymentTransactionEntity> paymentTransactions = new ArrayList<>();
 }

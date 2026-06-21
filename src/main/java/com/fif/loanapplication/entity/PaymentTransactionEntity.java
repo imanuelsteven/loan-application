@@ -12,9 +12,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -22,13 +25,15 @@ import java.time.ZonedDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@SuperBuilder
 @Table(name = "payment_transactions")
 public class PaymentTransactionEntity extends BaseEntity {
 
     @NotNull(message = "Repayment schedule wajib diisi")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "repayment_schedule_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "repayment_schedule_uid", referencedColumnName = "uid", nullable = false)
     private RepaymentScheduleEntity repaymentSchedule;
 
     @NotBlank(message = "Payment reference wajib diisi")
@@ -46,5 +51,6 @@ public class PaymentTransactionEntity extends BaseEntity {
     @NotNull(message = "Status wajib diisi")
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 30)
+    @Builder.Default
     private PaymentStatus status = PaymentStatus.PENDING;
 }

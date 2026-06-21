@@ -15,15 +15,18 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@SuperBuilder
 
 // Table in Database
 @Table(name = "customers", uniqueConstraints = {
@@ -50,11 +53,12 @@ public class CustomerEntity extends BaseEntity {
 
     @NotBlank(message = "Phone number wajib diisi")
     @Pattern(regexp = "^[0-9]{10,15}$", message = "Phone number harus 10 sampai 15 digit angka")
-    @Column(name = "phone_number", nullable = false, length = 15)
+    @Column(name = "phone_number", nullable = false, length = 15, unique = true)
     private String phoneNumber;
 
     // Relationship
     @OneToMany(mappedBy = "customer")
+    @Builder.Default
     private List<LoanApplicationEntity> loanApplications = new ArrayList<>();
 
 }

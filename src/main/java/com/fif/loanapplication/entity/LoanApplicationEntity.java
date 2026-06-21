@@ -20,15 +20,19 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@SuperBuilder
 @Table(name = "loan_applications")
 public class LoanApplicationEntity extends BaseEntity {
 
@@ -38,6 +42,7 @@ public class LoanApplicationEntity extends BaseEntity {
     private CustomerEntity customer;
 
     @NotNull(message = "Loan amount wajib diisi")
+    @Min(value = 1, message = "Loan Amount harus lebih besar dari 0!")
     @Column(name = "loan_amount", nullable = false, precision = 18, scale = 2)
     private BigDecimal loanAmount;
 
@@ -53,9 +58,11 @@ public class LoanApplicationEntity extends BaseEntity {
     @NotNull(message = "Status wajib diisi")
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 30)
+    @Builder.Default
     private LoanStatus status = LoanStatus.SUBMITTED;
 
     // Relationship
     @OneToMany(mappedBy = "loanApplication")
+    @Builder.Default
     private List<RepaymentScheduleEntity> repaymentSchedules = new ArrayList<>();
 }
